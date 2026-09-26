@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.16</version>
+        <relativePath/> <!-- look it up in Maven Central, not on disk -->
+    </parent>
+
+    <groupId>com.greengrid</groupId>
+    <artifactId>greengrid-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>GreenGrid</name>
+
+    <properties>
+        <java.version>17</java.version>
+        <!-- bump to the newest 2025.0.x on Maven Central -->
+        <spring-cloud.version>2025.0.0</spring-cloud.version>
+    </properties>
+
+    <modules>
+        <module>services/site-registry</module>
+        <module>services/ingestion</module>
+        <module>services/monitoring</module>
+        <module>services/notification</module>
+        <module>services/gateway</module>
+        <module>platform/greengrid-events</module>
+        <!-- add each module only once its folder exists:
+
+        <module>tools/inverter-simulator</module>
+        -->
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

@@ -1,0 +1,86 @@
+# ---------- Build output ----------
+target/
+build/
+out/
+*.class
+*.log
+hs_err_pid*
+replay_pid*
+
+# ---------- Maven ----------
+# Keep .mvn/wrapper/maven-wrapper.properties, mvnw and mvnw.cmd in Git
+.mvn/wrapper/maven-wrapper.jar
+.flattened-pom.xml
+dependency-reduced-pom.xml
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+
+# ---------- IntelliJ IDEA ----------
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# ---------- Other editors ----------
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
+*.swp
+*~
+
+# ---------- Spring Boot ----------
+# Local-only overrides (credentials, personal ports)
+application-local.yml
+application-local.yaml
+application-local.properties
+.spring-boot-devtools.properties
+
+# ---------- Secrets and environment ----------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+
+# ---------- Terraform ----------
+# Keep .terraform.lock.hcl in Git (it pins provider versions)
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# ---------- Kubernetes / local cluster ----------
+kubeconfig
+*.kubeconfig
+
+# ---------- Performance tests ----------
+perf/**/results/
+perf/**/target/
+*.jfr
+
+# ---------- Docker ----------
+# Named volumes live in Docker, but ignore bind-mounted data if you ever add some
+infra/compose/data/
+
+# ---------- OS files ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+*:Zone.Identifier
