@@ -6,6 +6,8 @@ status: approved
 date: 2026-09-28
 author: Riadh Gharbi
 research: docs/research/2026-09-27-greengrid-spec-baseline.md
+roadmap: docs/plans/2026-09-29-greengrid-roadmap.md
+slice: S-01
 research_commit: 9f310e409e267e03521255bab4034d6601e18029
 planned_at_commit: 9f310e409e267e03521255bab4034d6601e18029
 scope: [BR-002, BR-003, INC-001, INC-003, INC-004, INC-005, INC-007, INC-008, INC-011, INC-031, INC-035]
@@ -13,8 +15,8 @@ branch: [chore/PLAT-01-site-registry-foundation, feature/PLAT-03-outbox]
 approved: { by: "Riadh Gharbi", date: "2026-09-28" }
 progress: { phases: 3, tasks: 15, done: 0 }
 companion_html: 2026-09-28-registry-foundation-outbox.html
-last_updated: 2026-09-28
-last_updated_note: "Approved 2026-09-28 after reviewer findings F1–F15 were applied"
+last_updated: 2026-09-29
+last_updated_note: "Linked to the roadmap as slice S-01; Not-doing targets name slices; T-005 adjusted to the CLAUDE.md drift from 53daedb (§11)"
 ---
 
 # Plan: Site Registry foundation and transactional outbox
@@ -24,6 +26,7 @@ last_updated_note: "Approved 2026-09-28 after reviewer findings F1–F15 were ap
 **Goal:** the local stack starts reliably with one command, site-registry runs against it with real Mongo transactions and Kafka, and any event written through the shared outbox reaches Kafka at least once — even if the service dies between saving and publishing.
 **Approach:** first repair the Compose stack and README so Chapter 1 is truly done (PLAT-02); then give site-registry the Chapter 2 foundation (dependencies, `application.yml`, transaction manager, clock, Testcontainers base, failsafe for `*IT` tests); finally implement the envelope, outbox writer and ShedLock-guarded relay in `greengrid-events`, wire them into site-registry and prove the three at-least-once guarantees plus poison-entry parking with `OutboxIT`.
 **Research:** `docs/research/2026-09-27-greengrid-spec-baseline.md` (commit `9f310e4`) · **Slice:** BR-002, BR-003 + 9 inconsistencies · **Phases:** 3 · **Tasks:** 15
+**Roadmap:** slice S-01 of `docs/plans/2026-09-29-greengrid-roadmap.md` (milestones M0, M1); next slice S-02
 
 ## 2. Scope
 
@@ -49,9 +52,9 @@ last_updated_note: "Approved 2026-09-28 after reviewer findings F1–F15 were ap
 
 | Ref | Reason | Target |
 |---|---|---|
-| BR-010…BR-015 | Site aggregate, REST and onboarding stories build on this foundation | next plan (REG-01/REG-02) |
-| INC-006 | ArchUnit rules and broader test layers are Chapter 7; this plan only adds the Testcontainers base | Chapter 7 plan |
-| INC-033 | Spring Cloud bump only matters for the gateway | Chapter 6 plan |
+| BR-010…BR-015 | Site aggregate, REST and onboarding stories build on this foundation | roadmap S-02 (REG-01/02), S-03 (REG-03/04), S-04 (REG-05/06) |
+| INC-006 | ArchUnit rules and broader test layers come with the first domain code; this plan only adds the Testcontainers base | roadmap S-02 (RD-002), completed in S-14 |
+| INC-033 | Spring Cloud bump only matters for the gateway | roadmap S-13 |
 
 ### 2.3 Inconsistency dispositions
 
@@ -65,10 +68,10 @@ last_updated_note: "Approved 2026-09-28 after reviewer findings F1–F15 were ap
 | INC-008 | High | Fix | T-002 |
 | INC-010 | Low | Won't fix | Keep `site_registry` (D-001); Chapter 2 paths are substituted |
 | INC-011 | Low | Fix | T-001 |
-| INC-020 | Medium | Defer | Per-service Mongo users belong with Kubernetes secrets (Q-007); recorded in ADR-003 (T-006) |
+| INC-020 | Medium | Defer | Per-service Mongo users belong with Kubernetes secrets (Q-007, roadmap S-15); recorded in ADR-003 (T-006) |
 | INC-025 | Low | Won't fix | The spec file lives outside the repo; its author updates PLAT-01/PLAT-02 status after this plan |
 | INC-031 | Medium | Fix | T-014 |
-| INC-034 | Low | Defer | Topic retention and auto-creation belong to the readings plan (Q-015); the site topic is declared explicitly here (T-010) |
+| INC-034 | Low | Defer | Topic retention and auto-creation belong to the readings slice (Q-015, roadmap S-07); the site topic is declared explicitly here (T-010) |
 | INC-035 | Low | Fix | T-005 |
 
 ### 2.4 Global constraints
@@ -100,12 +103,12 @@ last_updated_note: "Approved 2026-09-28 after reviewer findings F1–F15 were ap
 
 ### 3.1 Deferred questions
 
-- Q-007 — per-service Mongo credentials; no task depends on it (INC-020 deferred, noted in ADR-003).
-- Q-015 — Kafka retention for the readings topic; no task depends on it (INC-034 deferred).
+- Q-007 — per-service Mongo credentials; no task depends on it (INC-020 deferred, noted in ADR-003; decided in roadmap S-15).
+- Q-015 — Kafka retention for the readings topic; no task depends on it (INC-034 deferred; decided in roadmap S-07).
 
 ## 4. Current State
 
-**Verified:** 2026-09-28 at commit `9f310e4` · **Drift since research:** none (HEAD is the research commit).
+**Verified:** 2026-09-28 at commit `9f310e4` · **Drift since research:** none (HEAD is the research commit). **Re-checked 2026-09-29 at `53daedb`:** that commit added `docs/` and rewrote `CLAUDE.md`, which now already contains the run-one-service command with `install -DskipTests` and a "Known issues (tracked)" section listing INC-008/INC-003, INC-001 and INC-004/INC-005 — T-005 adjusted (§11). No code or infrastructure file changed.
 
 | Ref | Research says | Now | Effect on plan |
 |---|---|---|---|
@@ -322,9 +325,9 @@ sequenceDiagram
   - Refs: INC-004, INC-005, INC-035, BR-002
   - Files: modify `README.md:1-29`; modify `CLAUDE.md`
   - Depends: T-001, T-003
-  - Interfaces: README sections "Prerequisites" (incl. Docker without sudo), "Run locally" (start infra with `infra/compose/docker-compose.yaml` and `--wait`, `rs.status()` check, `down -v` note, `./mvnw verify`, run one service with the `install -DskipTests` step from §5.3), "Why Spring Boot 3.5.16", "Future work" (Boot 4.1 migration, parked items Spec L171); CLAUDE.md: same run-one-service command, remove the fixed known issue (INC-001)
+  - Interfaces: README sections "Prerequisites" (incl. Docker without sudo), "Run locally" (start infra with `infra/compose/docker-compose.yaml` and `--wait`, `rs.status()` check, `down -v` note, `./mvnw verify`, run one service with the `install -DskipTests` step from §5.3), "Why Spring Boot 3.5.16", "Future work" (Boot 4.1 migration, parked items Spec L171); CLAUDE.md: remove the "Known issues (tracked)" section, because Phase 1 fixes all three items (the run-one-service command is already there since 53daedb)
   - Test first: — documentation; checked below
-  - Verify: `! grep -q 'docker-compose.yml' README.md && grep -q 'rs.status()' README.md && grep -q 'install -DskipTests' README.md && test $(( $(grep -c '^```' README.md) % 2 )) -eq 0` → exit 0
+  - Verify: `! grep -q 'docker-compose.yml' README.md && grep -q 'rs.status()' README.md && grep -q 'install -DskipTests' README.md && test $(( $(grep -c '^```' README.md) % 2 )) -eq 0 && ! grep -q 'Known issues' CLAUDE.md` → exit 0
   - Done when: a fresh reader can start the stack, build and run site-registry by following the README alone
 
 - [ ] T-006 [P] Write ADR-003 database per service
@@ -467,7 +470,7 @@ Uncovered refs: none. Tasks without refs: T-007 is an enabler.
 - **Docs:** README run-locally, prerequisites, rationale, future work; CLAUDE.md commands and known issues (T-005)
 - **Prerequisite:** Docker usable without `sudo` before T-002 (Phase 1 manual checkpoint)
 - **Merge gate:** Phase 2's PR merged to `main` before Phase 3 (manual checkpoint)
-- **Done when:** all checkpoints ticked, `validate_plan.py` clean, both branches merged
+- **Done when:** all checkpoints ticked, `validate_plan.py` clean, both branches merged; then set S-01 to `done` in the roadmap and plan S-02
 
 ## 10. Implementation Log
 
@@ -479,4 +482,5 @@ Uncovered refs: none. Tasks without refs: T-007 is an enabler.
 
 > Append-only; written by the implement phase and iteration mode. Format: `date — task/section — expected — found — decision — approved by`.
 
-- (empty)
+- 2026-09-29 — frontmatter, §1, §2.2, §2.3, §3.1, §9 — targets named "next plan" / "Chapter N plan" — the roadmap `docs/plans/2026-09-29-greengrid-roadmap.md` now owns the slice order — linked as slice S-01, targets renamed to roadmap slices; scope and decisions unchanged — Riadh Gharbi (roadmap request)
+- 2026-09-29 — §4, T-005 — CLAUDE.md needs the run-one-service command and loses one known issue (INC-001) — commit 53daedb already added the command and lists three known issues, all fixed by Phase 1 — T-005 removes the whole section; Verify also checks CLAUDE.md — Riadh Gharbi (roadmap request)

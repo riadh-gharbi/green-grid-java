@@ -14,7 +14,7 @@ Read before domain work (on demand, not every session):
 - `docs/domain/overview.md` — contexts, context map, site lifecycle, key flows
 - `docs/domain/ubiquitous-language.md` — terms, events, words to avoid
 - `docs/domain/requirements.md` — FR/NFR, permission matrix, stories with acceptance criteria and rule details, open points
-- `docs/research/*.md` — latest research (BR/TC/INC/Q IDs); `docs/plans/*.md` — approved plans; `docs/adr/` — decisions
+- `docs/research/*.md` — latest research (BR/TC/INC/Q IDs); `docs/plans/2026-09-29-greengrid-roadmap.md` — slice order (S-01…S-18) and where each BR/INC/Q is handled; `docs/plans/*.md` — slice plans; `docs/adr/` — decisions
 
 ## Rules that shape the code
 
@@ -29,7 +29,7 @@ Read before domain work (on demand, not every session):
 
 ## Workflow
 
-Work follows Research → Plan → Implement with the `rresearch`, `pplan` and `iimplement` skills: research writes `docs/research/YYYY-MM-DD-<slug>.md` (+ `.html`), plans go to `docs/plans/`, implementation executes an approved plan task by task and logs progress in it. Branches and commits carry story IDs: `feature/REG-01-register-site`, `feat(REG-01): …`, one branch per story or plan slice. Architecture decisions go to `docs/adr/NNN-title.md`.
+Work follows Research → Plan → Implement with the `rresearch`, `pplan` and `iimplement` skills: research writes `docs/research/YYYY-MM-DD-<slug>.md` (+ `.html`), plans go to `docs/plans/` (one per roadmap slice, planned when its dependencies are done), implementation executes an approved plan task by task and logs progress in it. Branches and commits carry story IDs: `feature/REG-01-register-site`, `feat(REG-01): …`, one branch per story or plan slice. Architecture decisions go to `docs/adr/NNN-title.md`.
 
 ## Commands
 
